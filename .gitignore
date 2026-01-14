@@ -1,0 +1,11 @@
+# Python 垃圾檔
+__pycache__/
+*.py[cod]
+venv/
+.venv/
+.env
+.DS_Store
+
+# Node modules (為了前端先預備)
+node_modules/
+dist/
