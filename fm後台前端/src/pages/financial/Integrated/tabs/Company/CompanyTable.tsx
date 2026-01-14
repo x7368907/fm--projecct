@@ -8,7 +8,7 @@ interface CompanyTableProps {
   searchParams?: any
 }
 const themeConfig = { token: { colorPrimary: '#14b8a6' } }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 export default function CompanyTable({ searchParams }: CompanyTableProps) {
   // 原本的 Hook（完全不動）
   const {
@@ -48,6 +48,7 @@ export default function CompanyTable({ searchParams }: CompanyTableProps) {
     if (el.scrollTop + el.clientHeight >= el.scrollHeight - 20) {
       loadMore()
     }
+    console.log(searchParams)
   }
 
   /** 載入更多 */

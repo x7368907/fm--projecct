@@ -15,9 +15,10 @@ export const useBetTypeTable = () => {
   })
 
   // 2. 【更新】點擊事件處理 (產生假資料並開啟彈窗)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const handleLinkClick = (title: string, record: BetTypeDataType) => {
     // 簡單判斷點擊的是哪個遊戲類別
+    console.log(record)
     let gameType = '電子'
     if (title.includes('真人')) gameType = '真人'
     if (title.includes('體育')) gameType = '體育'

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Table } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
@@ -103,11 +102,11 @@ const mockData: BetTypeDataType[] = [
   },
 ]
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function BetTypeTable({ searchParams }: BetTypeTableProps) {
   // Helper: 點擊事件
   const handleLinkClick = (title: string, record: BetTypeDataType) => {
     console.log(`Open modal for: ${title}`, record)
+    console.log(searchParams)
   }
 
   // Helper: 產生藍色連結

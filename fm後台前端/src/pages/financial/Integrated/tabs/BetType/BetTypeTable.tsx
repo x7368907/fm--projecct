@@ -7,7 +7,6 @@ interface BetTypeTableProps {
   searchParams?: any
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function BetTypeTable({ searchParams }: BetTypeTableProps) {
   // 原本 hook（不動）
   const {
@@ -47,6 +46,7 @@ export default function BetTypeTable({ searchParams }: BetTypeTableProps) {
     if (el.scrollTop + el.clientHeight >= el.scrollHeight - 20) {
       loadMore()
     }
+    console.log(searchParams)
   }
 
   /** 載入更多 */

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Table, Tag } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import DetailModal, {
@@ -70,7 +70,6 @@ const mockData: DataType[] = [
   },
 ]
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function AgentTable({ searchParams }: AgentTableProps) {
   const [modalState, setModalState] = useState({
     open: false,
@@ -154,6 +153,7 @@ export default function AgentTable({ searchParams }: AgentTableProps) {
   }
 
   const handleCloseModal = () => {
+    console.log(searchParams)
     setModalState((prev) => ({ ...prev, open: false }))
   }
 

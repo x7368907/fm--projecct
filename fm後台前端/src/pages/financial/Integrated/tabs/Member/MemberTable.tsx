@@ -8,7 +8,7 @@ interface MemberTableProps {
   searchParams?: any
 }
 const themeConfig = { token: { colorPrimary: '#14b8a6' } }
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 export default function MemberTable({ searchParams }: MemberTableProps) {
   // 原本 hook（完全不動）
   const {
@@ -48,6 +48,7 @@ export default function MemberTable({ searchParams }: MemberTableProps) {
     if (el.scrollTop + el.clientHeight >= el.scrollHeight - 20) {
       loadMore()
     }
+    console.log(searchParams)
   }
 
   /** 載入更多 */
