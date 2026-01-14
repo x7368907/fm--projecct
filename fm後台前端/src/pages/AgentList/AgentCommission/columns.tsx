@@ -38,7 +38,7 @@ export const getColumns = (opts: {
   return [
     {
       title: '分潤制度',
-      dataIndex: 'system',
+      dataIndex: 'system_type',
       width: 100,
       align: 'center',
       render: (text) => (
@@ -52,28 +52,43 @@ export const getColumns = (opts: {
       align: 'center',
       ellipsis: true,
     },
-    { title: '代理層級', dataIndex: 'agentLevel', align: 'center', width: 100 },
-    { title: '代理名稱', dataIndex: 'agentName', align: 'center', width: 100 },
+    {
+      title: '代理層級',
+      dataIndex: 'agent_level',
+      align: 'center',
+      width: 100,
+    },
+    { title: '代理名稱', dataIndex: 'agent_name', align: 'center', width: 100 },
     {
       title: '佔成比例(%)',
-      dataIndex: 'shareRatio',
+      dataIndex: 'share_ratio',
       align: 'center',
       width: 140,
     },
     {
       title: '代理反水比例 (%)',
       children: [
-        { title: '真人', dataIndex: 'rebateLive', align: 'center', width: 80 },
-        { title: '電子', dataIndex: 'rebateElec', align: 'center', width: 80 },
-        { title: '體育', dataIndex: 'rebateSport', align: 'center', width: 80 },
+        { title: '真人', dataIndex: 'rebate_live', align: 'center', width: 80 },
+        { title: '電子', dataIndex: 'rebate_elec', align: 'center', width: 80 },
         {
-          title: '彩票',
-          dataIndex: 'rebateLottery',
+          title: '體育',
+          dataIndex: 'rebate_sport',
           align: 'center',
           width: 80,
         },
-        { title: '棋牌', dataIndex: 'rebateChess', align: 'center', width: 80 },
-        { title: '捕魚', dataIndex: 'rebateFish', align: 'center', width: 80 },
+        {
+          title: '彩票',
+          dataIndex: 'rebate_lottery',
+          align: 'center',
+          width: 80,
+        },
+        {
+          title: '棋牌',
+          dataIndex: 'rebate_chess',
+          align: 'center',
+          width: 80,
+        },
+        { title: '捕魚', dataIndex: 'rebate_fish', align: 'center', width: 80 },
       ],
     },
     {

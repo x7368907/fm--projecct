@@ -1,15 +1,16 @@
 export interface CommissionData {
   key: string
-  system: string
+  system_type: string
   name: string
-  agentLevel: string
-  agentName: string
-  shareRatio: number
-  rebateLive: number
-  rebateElec: number
-  rebateSport: number
-  rebateLottery: number
-  rebateChess: number
-  rebateFish: number
+  agent_level: string
+  agent_name: string
+  share_ratio: number
+  rebate_live: number
+  rebate_elec: number
+  rebate_sport: number
+  rebate_lottery: number
+  rebate_chess: number
+  rebate_fish: number
   settlement: string
+  id: number
 }

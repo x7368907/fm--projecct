@@ -36,7 +36,12 @@ export default function CreateCommission({
         </div>
 
         <Form form={form} layout="vertical" className="max-w-4xl">
-          <Form.Item label="代理制度" name="system" initialValue="share">
+          <Form.Item
+            label="代理制度"
+            name="system"
+            initialValue="share"
+            rules={[{ required: true, message: '請選擇' }]}
+          >
             <Select>
               <Select.Option value="share">佔成制</Select.Option>
               <Select.Option value="rebate">反水制</Select.Option>
@@ -51,7 +56,11 @@ export default function CreateCommission({
             <Input placeholder="請輸入" />
           </Form.Item>
 
-          <Form.Item label="代理級別選擇" name="level">
+          <Form.Item
+            label="代理級別選擇"
+            name="level"
+            rules={[{ required: true, message: '請選擇' }]}
+          >
             <Select
               placeholder="請選擇"
               options={[
@@ -64,7 +73,11 @@ export default function CreateCommission({
               ]}
             />
           </Form.Item>
-          <Form.Item label="代理名稱選擇" name="agentName">
+          <Form.Item
+            label="代理名稱選擇"
+            name="agentName"
+            rules={[{ required: true, message: '請選擇' }]}
+          >
             <Select
               placeholder="請選擇"
               options={[
@@ -77,14 +90,22 @@ export default function CreateCommission({
               ]}
             />
           </Form.Item>
-          <Form.Item label="代理佔成比例(%)" name="ratio">
+          <Form.Item
+            label="代理佔成比例(%)"
+            name="ratio"
+            rules={[{ required: true, message: '請選擇' }]}
+          >
             <Input placeholder="請輸入" suffix="%" />
           </Form.Item>
 
           {/* 模組化的反水設定區塊 */}
           <RebateSettings />
 
-          <Form.Item label="代理分潤結算" name="settlement">
+          <Form.Item
+            label="代理分潤結算"
+            name="settlement"
+            rules={[{ required: true, message: '請選擇' }]}
+          >
             <Select placeholder="請選擇">
               <Select.Option value="week">週結(每週日-23:59:59)</Select.Option>
               <Select.Option value="month">

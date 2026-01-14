@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Form } from 'antd'
 import type { CommissionData } from '../types'
+import { commissionCreate, commissionUpdate } from '../../../../api/commission'
 
 interface UseCommissionFormProps {
   initialValues?: CommissionData | null
@@ -17,20 +18,20 @@ export const useCommissionForm = ({
     if (initialValues) {
       // 編輯模式：資料轉換與回填
       form.setFieldsValue({
-        system: initialValues.system === '佔成制' ? 'share' : 'rebate',
+        system: initialValues.system_type === '佔成制' ? 'share' : 'rebate',
         name: initialValues.name,
-        level: 'all',
-        agentName: 'all',
-        ratio: initialValues.shareRatio,
+        level: initialValues.agent_level ?? 'all',
+        agentName: initialValues.agent_name ?? 'all',
+        ratio: initialValues.share_ratio,
         settlement: initialValues.settlement === '週結' ? 'week' : 'month',
         // 巢狀資料處理
         rebate: {
-          live: initialValues.rebateLive,
-          elec: initialValues.rebateElec,
-          sport: initialValues.rebateSport,
-          lottery: initialValues.rebateLottery,
-          chess: initialValues.rebateChess,
-          fish: initialValues.rebateFish,
+          live: initialValues.rebate_live,
+          elec: initialValues.rebate_elec,
+          sport: initialValues.rebate_sport,
+          lottery: initialValues.rebate_lottery,
+          chess: initialValues.rebate_chess,
+          fish: initialValues.rebate_fish,
         },
       })
     } else {
@@ -39,12 +40,32 @@ export const useCommissionForm = ({
     }
   }, [initialValues, form])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     form
       .validateFields()
-      .then((values) => {
-        console.log(initialValues ? 'Updating:' : 'Creating:', values)
-        // 這裡可以加入 API 呼叫邏輯
+      .then(async (values) => {
+        const payload = {
+          system_type: values.system === 'share' ? '佔成制' : '反水制',
+          name: values.name,
+          agent_level: values.level,
+          agent_name: values.agentName,
+          share_ratio: values.ratio,
+          rebate_live: values.rebate?.live ?? 0,
+          rebate_elec: values.rebate?.elec ?? 0,
+          rebate_sport: values.rebate?.sport ?? 0,
+          rebate_lottery: values.rebate?.lottery ?? 0,
+          rebate_chess: values.rebate?.chess ?? 0,
+          rebate_fish: values.rebate?.fish ?? 0,
+          settlement: values.settlement === 'week' ? '週結' : '月結',
+        }
+
+        if (initialValues) {
+          // ✏️ 修改
+          await commissionUpdate(initialValues.id, payload)
+        } else {
+          // ➕ 新增
+          await commissionCreate(payload)
+        }
         onSuccess()
       })
       .catch((info) => {
