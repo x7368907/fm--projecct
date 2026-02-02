@@ -1,23 +1,55 @@
 import instance from './axios'
 
-export const login = async (email: string, password: string) => {
-  const response = await instance.post('/login', { email, password })
-
-  const { token, user } = response.data
-
-  // ✅ 儲存到 localStorage，確保重新整理後不會丟失登入狀態
-  localStorage.setItem('token', token)
-  localStorage.setItem('user', JSON.stringify(user))
-
-  return response.data
+export interface LoginResponse {
+  access_token: string
+  token_type: 'bearer'
 }
 
-export const logout = async () => {
-  const response = await instance.post('/logout')
+export interface MeResponse {
+  id: number
+  username: string
+  role: string
+  is_active: boolean
+}
 
-  // ✅ 清除 localStorage 的登入資訊
-  localStorage.removeItem('token')
+export interface RegisterResponse {
+  id: number
+  username: string
+  role: string
+  is_active: boolean
+}
+
+// ✅ 登入：x-www-form-urlencoded
+export const login = async (username: string, password: string) => {
+  const body = new URLSearchParams()
+  body.append('username', username)
+  body.append('password', password)
+
+  const res = await instance.post<LoginResponse>('/auth/login', body, {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  })
+
+  localStorage.setItem('access_token', res.data.access_token)
+  return res.data
+}
+
+// ✅ 註冊：JSON
+export const register = async (username: string, password: string) => {
+  const res = await instance.post<RegisterResponse>('/auth/register', {
+    username,
+    password,
+  })
+  return res.data
+}
+
+// ✅ 取得目前登入者
+export const me = async () => {
+  const res = await instance.get<MeResponse>('/auth/me')
+  localStorage.setItem('user', JSON.stringify(res.data))
+  return res.data
+}
+
+export const logout = () => {
+  localStorage.removeItem('access_token')
   localStorage.removeItem('user')
-
-  return response.data
 }

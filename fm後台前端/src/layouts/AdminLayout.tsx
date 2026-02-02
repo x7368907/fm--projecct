@@ -1,7 +1,9 @@
 import { Layout, Menu, Typography } from 'antd'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useAuthStore } from '../store/auth'
+import { me } from '../api/auth'
+
 const { Header, Sider, Content } = Layout
 const { Title } = Typography
 
@@ -14,7 +16,7 @@ const menuItems = [
   {
     key: 'agent',
     label: '代理管理',
-    path: '/home/agent/list', // 預設點擊父選單跳轉路徑
+    path: '/home/agent/list',
     children: [
       {
         key: 'agent/commission',
@@ -44,11 +46,7 @@ const menuItems = [
     label: '會員管理',
     path: '/home/member',
     children: [
-      {
-        key: 'member/detail',
-        label: '會員資料',
-        path: '/home/member/detail',
-      },
+      { key: 'member/detail', label: '會員資料', path: '/home/member/detail' },
       {
         key: 'agent/bankCard',
         label: '會員銀行卡',
@@ -220,22 +218,30 @@ const menuItems = [
 ]
 
 export default function AdminLayout() {
-  const { setLogoutUser } = useAuthStore()
   const navigate = useNavigate()
   const location = useLocation()
+
+  const { user, setLoginUser, setLogoutUser } = useAuthStore()
+
   const [openKeys, setOpenKeys] = useState<string[]>([])
+
+  // ✅ 扁平化 menu，方便 click 時找路徑
+  const flatMenu = useMemo(() => {
+    return menuItems.flatMap((item) => item.children || [item])
+  }, [])
+
   const handleLogout = () => {
     setLogoutUser()
-    navigate('/')
+    navigate('/', { replace: true })
   }
+
   const getSelectedKeys = () => {
     const path = location.pathname
-    const match = menuItems
-      .flatMap((item) => item.children || [item])
-      .find((sub) => sub.path === path)
+    const match = flatMenu.find((sub) => sub.path === path)
     return match ? [match.key] : []
   }
 
+  // ✅ 自動展開目前路徑所屬的父選單
   useEffect(() => {
     const current = menuItems.find((item) => {
       if (!item.children) return false
@@ -246,8 +252,25 @@ export default function AdminLayout() {
     if (current) setOpenKeys([current.key])
   }, [location.pathname])
 
+  // ✅ 重新整理後：若有 token 但 store 沒 user → 呼叫 /auth/me 補回
+  useEffect(() => {
+    const token = localStorage.getItem('access_token')
+    if (!token) return
+
+    if (!user) {
+      me()
+        .then((u) => {
+          setLoginUser(u)
+        })
+        .catch(() => {
+          // token 失效 / 後端拒絕 → 登出回登入
+          setLogoutUser()
+          navigate('/', { replace: true })
+        })
+    }
+  }, [user, setLoginUser, setLogoutUser, navigate])
+
   const handleClick = (e: any) => {
-    const flatMenu = menuItems.flatMap((item) => item.children || [item])
     const target = flatMenu.find((i) => i.key === e.key)
 
     if (!target) {
@@ -260,7 +283,6 @@ export default function AdminLayout() {
 
   return (
     <Layout className="min-h-[100vh]">
-      {/* Header 改在這邊！ */}
       <Header className="flex h-[70px] items-center justify-between bg-[#e2e2e2] px-6">
         <Title level={4} className="mt-2">
           FM後台管理系統
@@ -279,20 +301,24 @@ export default function AdminLayout() {
               </div>
             )
           )}
+
           <button className="cursor-pointer border border-[#999] bg-white px-2 py-3 text-center">
             <span>瀏覽前台</span>
           </button>
+
           <button
             onClick={handleLogout}
             className="cursor-pointer border border-[#999] bg-white px-2 py-3 text-center"
           >
             登出
           </button>
-          <strong className="ml-3">Hi Luca！</strong>
+
+          <strong className="ml-3">
+            Hi {user?.username ? user.username : '—'}！
+          </strong>
         </div>
       </Header>
 
-      {/* 下層 Layout 包含左側選單與主內容 */}
       <Layout>
         <Sider width={200} theme="light">
           <Menu
