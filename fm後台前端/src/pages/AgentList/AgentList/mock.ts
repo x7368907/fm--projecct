@@ -24,7 +24,7 @@ function createAgent(level: number, parentKey: string | null): DataType {
     currentLevel: level,
     maxLevel: MAX_LEVEL,
     childCount,
-
+    id,
     name: `agent_${key}`,
     account: `09${random(10000000, 99999999)}`,
     realName: randomFrom(['王大尾', '林測試', '張代理', '陳小明']),
