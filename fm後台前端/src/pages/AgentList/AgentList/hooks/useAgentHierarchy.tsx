@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { message } from 'antd'
 import type { DataType } from '../types'
+import { getAgents, getSubAgents } from '../../../../api/agents'
 import { MOCK_DATA } from '../mock'
 
 export type ViewMode = 'search' | 'hierarchy'
@@ -38,10 +39,10 @@ export function useAgentHierarchy(): UseAgentHierarchyReturn {
    * 初始化：預設 1 級（搜尋模式）
    * =========================
    */
-  const initDefaultLevel = () => {
-    const list = MOCK_DATA.filter((a) => a.currentLevel === 1)
+  const initDefaultLevel = async () => {
+    const res = await getAgents({ level: 1 })
 
-    setAgentList(list)
+    setAgentList(res.data)
     setCardLevelPath([1])
     setParentKeyPath([null])
     setViewMode('search')
@@ -56,17 +57,16 @@ export function useAgentHierarchy(): UseAgentHierarchyReturn {
    * 搜尋：依代理級別
    * =========================
    */
-  const searchByLevel = (levelValue: string) => {
+  const searchByLevel = async (levelValue: string) => {
     if (!levelValue || levelValue === 'all') {
       message.warning('請選擇代理級別')
       return
     }
 
     const levelNumber = Number(levelValue.replace('lvl', ''))
+    const res = await getAgents({ level: levelNumber })
 
-    const list = MOCK_DATA.filter((a) => a.currentLevel === levelNumber)
-
-    setAgentList(list)
+    setAgentList(res.data)
     setCardLevelPath([levelNumber])
     setParentKeyPath([null])
     setViewMode('search')
@@ -77,19 +77,18 @@ export function useAgentHierarchy(): UseAgentHierarchyReturn {
    * 層級導覽：往下一層
    * =========================
    */
-  const goNextLevel = (record: DataType) => {
+  const goNextLevel = async (record: DataType) => {
     const nextLevel = record.currentLevel + 1
-
     if (nextLevel > record.maxLevel) return
 
-    const list = MOCK_DATA.filter((a) => a.parentKey === record.key)
+    const res = await getSubAgents(record.id)
 
-    if (list.length === 0) {
+    if (res.data.length === 0) {
       message.info('此代理沒有下線代理')
       return
     }
 
-    setAgentList(list)
+    setAgentList(res.data)
     setCardLevelPath((prev) => [...prev, nextLevel])
     setParentKeyPath((prev) => [...prev, record.key])
     setViewMode('hierarchy')

@@ -1,61 +1,44 @@
-export default function handler(req: Request) {
-  const url = new URL(req.url)
-  const level = url.searchParams.get('level')
-  const parentKey = url.searchParams.get('parentKey')
+import instance from './axios'
 
-  const MOCK_AGENTS = [
-    {
-      key: '1',
-      name: 'FMCA',
-      currentLevel: 1,
-      maxLevel: 5,
-      memberCount: 8,
-      parentKey: null,
-    },
-    {
-      key: '2',
-      name: '代理 A',
-      currentLevel: 2,
-      maxLevel: 5,
-      memberCount: 3,
-      parentKey: '1',
-    },
-    {
-      key: '3',
-      name: '代理 B',
-      currentLevel: 2,
-      maxLevel: 5,
-      memberCount: 2,
-      parentKey: '1',
-    },
-    {
-      key: '4',
-      name: '代理 C',
-      currentLevel: 3,
-      maxLevel: 5,
-      memberCount: 0,
-      parentKey: '2',
-    },
-  ]
+/**
+ * 取得代理列表（一進頁面用）
+ */
+export const getAgents = async (params?: {
+  level?: number
+  status?: 'enabled' | 'disabled'
+  keyword?: string
+  page?: number
+  page_size?: number
+}) => {
+  const response = await instance.get('/agents', { params })
+  return response.data
+}
 
-  let result = MOCK_AGENTS
+/**
+ * 新增代理
+ */
+export const createAgent = async (payload: any) => {
+  const response = await instance.post('/agents', payload)
+  return response.data
+}
 
-  if (parentKey) {
-    result = result.filter((a) => a.parentKey === parentKey)
-  }
+/**
+ * 更新代理（啟用 / 停用 / 編輯）
+ */
+export const updateAgent = async (id: number, payload: any) => {
+  const response = await instance.put(`/agents/${id}`, payload)
+  return response.data
+}
 
-  if (level) {
-    result = result.filter((a) => a.currentLevel === Number(level))
-  }
-
-  return new Response(
-    JSON.stringify({
-      list: result,
-      total: result.length,
-    }),
-    {
-      headers: { 'Content-Type': 'application/json' },
-      status: 200,
-    }
-  )
+/**
+ * 取得下層代理（點 1/5(3) 用）
+ */
+export const getSubAgents = async (
+  parentId: number,
+  params?: { page?: number; page_size?: number }
+) => {
+  const response = await instance.get(`/agents/${parentId}/children`, {
+    params,
+  })
+  return response.data
 }

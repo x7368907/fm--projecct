@@ -1,6 +1,7 @@
 export interface DataType {
   /* ===== 基本識別 ===== */
   key: string
+  id: number
 
   /* ===== 層級關係 ===== */
   currentLevel: number
