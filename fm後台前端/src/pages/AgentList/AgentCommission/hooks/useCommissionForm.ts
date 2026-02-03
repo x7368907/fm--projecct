@@ -18,12 +18,13 @@ export const useCommissionForm = ({
     if (initialValues) {
       // 編輯模式：資料轉換與回填
       form.setFieldsValue({
-        system: initialValues.system_type === '佔成制' ? 'share' : 'rebate',
+        system: initialValues.system_type === 'share' ? 'share' : 'rebate',
         name: initialValues.name,
         level: initialValues.agent_level ?? 'all',
         agentName: initialValues.agent_name ?? 'all',
         ratio: initialValues.share_ratio,
-        settlement: initialValues.settlement === '週結' ? 'week' : 'month',
+        settlement:
+          initialValues.settlement === 'weekly' ? 'weekly' : 'monthly',
         // 巢狀資料處理
         rebate: {
           live: initialValues.rebate_live,
@@ -45,7 +46,7 @@ export const useCommissionForm = ({
       .validateFields()
       .then(async (values) => {
         const payload = {
-          system_type: values.system === 'share' ? '佔成制' : '反水制',
+          system_type: values.system === 'share' ? 'share' : 'rebate',
           name: values.name,
           agent_level: values.level,
           agent_name: values.agentName,
@@ -56,7 +57,7 @@ export const useCommissionForm = ({
           rebate_lottery: values.rebate?.lottery ?? 0,
           rebate_chess: values.rebate?.chess ?? 0,
           rebate_fish: values.rebate?.fish ?? 0,
-          settlement: values.settlement === 'week' ? '週結' : '月結',
+          settlement: values.settlement === 'weekly' ? 'weekly' : 'monthly',
         }
 
         if (initialValues) {

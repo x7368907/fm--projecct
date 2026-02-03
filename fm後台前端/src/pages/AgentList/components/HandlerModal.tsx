@@ -1,7 +1,6 @@
-import { Modal, Table, Tag } from 'antd'
+import { Modal, Table, Tag, Empty } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 
-// 1. 加上 export，讓父層也能使用這個型別
 export interface HandlerLogData {
   key: string
   time: string
@@ -13,21 +12,19 @@ export interface HandlerLogData {
 interface HandlerModalProps {
   open: boolean
   onCancel: () => void
-  logs: HandlerLogData[] // 2. 新增：接收外部傳入的資料
+  logs: HandlerLogData[]
+  loading?: boolean
+  planName?: string
 }
 
 export default function HandlerModal({
   open,
   onCancel,
   logs,
+  loading = false,
 }: HandlerModalProps) {
   const columns: ColumnsType<HandlerLogData> = [
-    {
-      title: '修改時間',
-      dataIndex: 'time',
-      key: 'time',
-      width: 180,
-    },
+    { title: '修改時間', dataIndex: 'time', key: 'time', width: 180 },
     {
       title: '經手人',
       dataIndex: 'handler',
@@ -49,16 +46,16 @@ export default function HandlerModal({
         </Tag>
       ),
     },
-    {
-      title: '異動資料',
-      dataIndex: 'details',
-      key: 'details',
-    },
+    { title: '異動資料', dataIndex: 'details', key: 'details' },
   ]
 
   return (
     <Modal
-      title={<span className="text-lg font-bold">經手人</span>}
+      title={
+        <div className="flex flex-col">
+          <span className="text-lg font-bold">經手人</span>
+        </div>
+      }
       open={open}
       onCancel={onCancel}
       footer={null}
@@ -67,8 +64,10 @@ export default function HandlerModal({
     >
       <Table
         columns={columns}
-        // 3. 這裡改用 props 傳進來的 logs
         dataSource={logs}
+        loading={loading}
+        rowKey="key"
+        locale={{ emptyText: <Empty description="目前沒有紀錄" /> }}
         pagination={{
           pageSize: 5,
           position: ['bottomLeft'],

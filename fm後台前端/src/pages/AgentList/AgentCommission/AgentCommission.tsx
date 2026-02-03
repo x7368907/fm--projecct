@@ -22,7 +22,14 @@ const AgentCommission: React.FC = () => {
   const [dataSource, setDataSource] = useState<CommissionData[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
-  const { logs, open, setOpen, fetchLogs } = useCommissionLogs()
+  const {
+    logs,
+    open,
+    setOpen,
+    fetchLogs,
+    loading: logsLoading,
+    planName,
+  } = useCommissionLogs()
 
   // 定義搜尋欄位
   const searchFields: SearchField[] = [
@@ -51,8 +58,8 @@ const AgentCommission: React.FC = () => {
         <Select
           options={[
             { label: '全部', value: 'all' },
-            { label: '週結', value: '週結' },
-            { label: '月結', value: '月結' },
+            { label: '週結', value: 'weekly' },
+            { label: '月結', value: 'monthly' },
           ]}
         />
       ),
@@ -148,13 +155,15 @@ const AgentCommission: React.FC = () => {
                 dataSource={dataSource}
                 loading={loading}
                 onEdit={handleEdit}
-                onLogs={fetchLogs}
+                onLogs={(record) => fetchLogs(record)}
               />
             </div>
 
             <HandlerModal
               open={open}
               logs={logs}
+              loading={logsLoading}
+              planName={planName}
               onCancel={() => setOpen(false)}
             />
           </>

@@ -18,3 +18,9 @@ export const commissionUpdate = async (id: number, payload: any) => {
   const response = await instance.put(`/commission-plans/${id}`, payload)
   return response.data
 }
+
+// ✅ 新增：取得經手人 / logs
+export const commissionLogs = async (id: number) => {
+  const response = await instance.get(`/commission-plans/${id}/logs`)
+  return response.data
+}

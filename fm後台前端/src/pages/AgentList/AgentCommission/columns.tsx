@@ -8,24 +8,13 @@ import {
 } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
 import type { CommissionData } from './types'
-// ✅ 建議：DB / API 回來存 code，顯示再轉中文
-const SYSTEM_TYPE_LABEL: Record<string, string> = {
-  share: '佔成制',
-  rebate: '返水制',
-}
-
-const SETTLEMENT_LABEL: Record<string, string> = {
-  daily: '日結',
-  weekly: '週結',
-  monthly: '月結',
-}
-
-// （可選）如果你想不同結算顯示不同備註
-const SETTLEMENT_HINT: Record<string, string> = {
-  daily: '(每日-23:59:59)',
-  weekly: '(每週日-23:59:59)',
-  monthly: '(每月最後一天-23:59:59)',
-}
+import {
+  SYSTEM_TYPE_LABEL,
+  SETTLEMENT_LABEL,
+  SETTLEMENT_HINT,
+  AGENT_LEVEL_LABEL,
+  mapLabel,
+} from './mappings'
 export const getColumns = (opts: {
   onEdit: (record: CommissionData) => void
   onLogs: (record: CommissionData) => void
@@ -59,7 +48,7 @@ export const getColumns = (opts: {
       width: 100,
       align: 'center',
       render: (value: string) => {
-        const label = SYSTEM_TYPE_LABEL[value] ?? value
+        const label = mapLabel(SYSTEM_TYPE_LABEL, value)
         const isShare = value === 'share' || label === '佔成制'
         return <Tag color={isShare ? 'blue' : 'cyan'}>{label}</Tag>
       },
@@ -76,6 +65,7 @@ export const getColumns = (opts: {
       dataIndex: 'agent_level',
       align: 'center',
       width: 100,
+      render: (value: string) => mapLabel(AGENT_LEVEL_LABEL, value),
     },
     { title: '代理名稱', dataIndex: 'agent_name', align: 'center', width: 100 },
     {
@@ -116,8 +106,8 @@ export const getColumns = (opts: {
       align: 'center',
       width: 150,
       render: (value: string) => {
-        const label = SETTLEMENT_LABEL[value] ?? value
-        const hint = SETTLEMENT_HINT[value] ?? '(每週日-23:59:59)'
+        const label = mapLabel(SETTLEMENT_LABEL, value)
+        const hint = mapLabel(SETTLEMENT_HINT, value)
         return (
           <div className="flex flex-col items-center">
             <span className="font-medium">{label}</span>
