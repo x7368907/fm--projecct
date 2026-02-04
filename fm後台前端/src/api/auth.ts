@@ -19,21 +19,18 @@ export interface RegisterResponse {
   is_active: boolean
 }
 
-// ✅ 登入：x-www-form-urlencoded
+// ✅ 登入
 export const login = async (username: string, password: string) => {
-  const body = new URLSearchParams()
-  body.append('username', username)
-  body.append('password', password)
-
-  const res = await instance.post<LoginResponse>('/auth/login', body, {
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  const res = await instance.post<LoginResponse>('/auth/login', {
+    username,
+    password,
   })
 
   localStorage.setItem('access_token', res.data.access_token)
   return res.data
 }
 
-// ✅ 註冊：JSON
+// ✅ 註冊
 export const register = async (username: string, password: string) => {
   const res = await instance.post<RegisterResponse>('/auth/register', {
     username,
