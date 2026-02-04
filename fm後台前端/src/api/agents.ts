@@ -3,10 +3,21 @@ import instance from './axios'
 /**
  * 取得代理列表（一進頁面用）
  */
+/**
+ * 取得代理列表（支援多重條件搜尋）
+ */
 export const getAgents = async (params?: {
   level?: number
-  status?: 'enabled' | 'disabled'
-  keyword?: string
+  name?: string // 代理名稱
+  account?: string // 代理帳號
+  realName?: string // 代理姓名
+  status?: string // 帳號狀態
+  cashGroup?: string // 金流群組
+  profitSystem?: string // 分潤制度
+  regStart?: string // 註冊開始時間
+  regEnd?: string // 註冊結束時間
+  loginStart?: string // 登入開始時間
+  loginEnd?: string // 登入結束時間
   page?: number
   page_size?: number
 }) => {

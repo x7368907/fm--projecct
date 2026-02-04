@@ -53,23 +53,47 @@ export function useAgentHierarchy(): UseAgentHierarchyReturn {
   }, [])
 
   /**
-   * =========================
-   * 搜尋：依代理級別
-   * =========================
+   * 搜尋：依代理級別與多重條件
+   * values 來自 AntD Form 的 onFinish
    */
-  const searchByLevel = async (levelValue: string) => {
-    if (!levelValue || levelValue === 'all') {
+
+  const searchByLevel = async (values: any) => {
+    // 1. 取得 level 並轉換
+    const { level, regDate, loginDate, ...rest } = values
+    if (!level) {
       message.warning('請選擇代理級別')
       return
     }
+    const levelNumber = Number(level.replace('lvl', ''))
 
-    const levelNumber = Number(levelValue.replace('lvl', ''))
-    const res = await getAgents({ level: levelNumber })
+    // 2. 組裝參數，將其餘對齊好的欄位直接放入 params
+    const params: any = {
+      level: levelNumber,
+      ...rest,
+    }
 
-    setAgentList(res.data)
-    setCardLevelPath([levelNumber])
-    setParentKeyPath([null])
-    setViewMode('search')
+    // 3. 處理註冊時間區間
+    if (regDate && regDate.length === 2) {
+      params.regStart = regDate[0].format('YYYY-MM-DD')
+      params.regEnd = regDate[1].format('YYYY-MM-DD')
+    }
+
+    // 4. 處理最後登入時間區長
+    if (loginDate && loginDate.length === 2) {
+      params.loginStart = loginDate[0].format('YYYY-MM-DD')
+      params.loginEnd = loginDate[1].format('YYYY-MM-DD')
+    }
+
+    try {
+      const res = await getAgents(params)
+      setAgentList(res.data)
+      setCardLevelPath([levelNumber])
+      setParentKeyPath([null])
+      setViewMode('search')
+    } catch (err) {
+      console.error(err)
+      message.error('搜尋失敗')
+    }
   }
 
   /**

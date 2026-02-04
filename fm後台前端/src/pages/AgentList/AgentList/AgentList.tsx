@@ -66,19 +66,19 @@ export default function AgentList() {
     },
     {
       label: '代理名稱',
-      name: 'agentName',
+      name: 'name', // 修正：對齊後端 name
       colProps: { xs: 24, sm: 12, md: 8, lg: 4 },
       render: () => <Input placeholder="請輸入" />,
     },
     {
       label: '代理帳號',
-      name: 'agentAccount',
+      name: 'account', // 修正：對齊後端 account
       colProps: { xs: 24, sm: 12, md: 8, lg: 4 },
       render: () => <Input placeholder="請輸入" />,
     },
     {
       label: '代理姓名',
-      name: 'realName',
+      name: 'realName', // 已對齊
       colProps: { xs: 24, sm: 12, md: 8, lg: 4 },
       render: () => <Input placeholder="請輸入" />,
     },
@@ -91,12 +91,8 @@ export default function AgentList() {
           placeholder="請選擇"
           allowClear
           options={[
-            { label: '啟用', value: 1 },
-            { label: '停用', value: 0 },
-            { label: '啟用(凍結錢包)', value: 2 },
-            { label: '啟用(停用儲值)', value: 3 },
-            { label: '啟用(停用託售)', value: 4 },
-            { label: '終身停權', value: 5 },
+            { label: '啟用', value: '啟用' }, // 直接傳中文對齊後端邏輯
+            { label: '停用', value: '停用' },
           ]}
         />
       ),
@@ -110,35 +106,34 @@ export default function AgentList() {
           placeholder="請選擇"
           allowClear
           options={[
-            { label: '常規會員', value: 1 },
-            { label: '老會員', value: 2 },
-            { label: '信用代理', value: 3 },
-            { label: 'USDT通道', value: 4 },
+            { label: '常規會員', value: '常規會員' },
+            { label: '老會員', value: '老會員' },
+            { label: '信用代理', value: '信用代理' },
+            { label: 'USDT通道', value: 'USDT通道' },
           ]}
         />
       ),
     },
     {
       label: '註冊時間',
-      name: 'regDate',
+      name: 'regDate', // 在 Hook 轉成 regStart / regEnd
       colProps: { xs: 24, sm: 24, md: 12, lg: 6 },
       render: () => <QuickRangePicker />,
     },
     {
       label: '最後登入時間',
-      name: 'loginDate',
+      name: 'loginDate', // 在 Hook 轉成 loginStart / loginEnd
       colProps: { xs: 24, sm: 24, md: 12, lg: 6 },
       render: () => <QuickRangePicker />,
     },
     {
       label: '分潤制度',
-      name: 'system',
+      name: 'profitSystem', // 修正：system -> profitSystem
       colProps: { xs: 24, sm: 12, md: 8, lg: 3 },
       render: () => (
         <Select placeholder="全部" allowClear>
-          <Select.Option value="all">全部</Select.Option>
-          <Select.Option value="share">佔成制</Select.Option>
-          <Select.Option value="rebate">反水制</Select.Option>
+          <Select.Option value="佔成制">佔成制</Select.Option>
+          <Select.Option value="反水制">反水制</Select.Option>
         </Select>
       ),
     },
@@ -208,7 +203,9 @@ export default function AgentList() {
               fields={searchFields}
               initialValues={initialValues}
               onCreate={handleCreate}
-              onSearch={(values) => searchByLevel(values.level)}
+              onSearch={(values) => {
+                searchByLevel(values)
+              }}
               extra={downloadBtn}
             />
 
