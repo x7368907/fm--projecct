@@ -5,7 +5,7 @@ from jose import jwt, JWTError
 
 from app.db.database import SessionLocal
 from app.models.user import User
-from app.schemas.auth import UserCreate, Token, UserOut
+from app.schemas.auth import UserCreate, Token, UserOut,LoginPayload
 from app.core.security import (
     hash_password,
     verify_password,
@@ -51,14 +51,10 @@ def register(payload: UserCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=Token)
-def login(
-    form_data: OAuth2PasswordRequestForm = Depends(),
-    db: Session = Depends(get_db),
-):
-    # OAuth2PasswordRequestForm 用 username/password（注意是 form，不是 JSON）
-    user = db.query(User).filter(User.username == form_data.username).first()
+def login(payload: LoginPayload, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.username == payload.username).first()
 
-    if not user or not verify_password(form_data.password, user.hashed_password):
+    if not user or not verify_password(payload.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect username or password",
