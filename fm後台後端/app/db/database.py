@@ -1,31 +1,19 @@
+from dotenv import load_dotenv
+from pathlib import Path
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# 1. 嘗試從環境變數取得 Railway 的資料庫網址
-DATABASE_URL = os.getenv("DATABASE_URL")
+BASE_DIR = Path(__file__).resolve().parents[2]  # fm後台後端
+load_dotenv(dotenv_path=BASE_DIR / ".env")
 
-# 2. 如果沒有環境變數 (代表你在本機開發)，就用你原本的 Local 網址
-if not DATABASE_URL:
-    DATABASE_URL = "mysql+pymysql://root:root1234@localhost:3307/fm_project"
+DATABASE_URL = os.environ["DATABASE_URL"]
 
-# 3. 修正 Railway 網址格式 (把 mysql:// 改成 mysql+pymysql://)
-# 這樣 SQLAlchemy 才看得懂
-if DATABASE_URL and DATABASE_URL.startswith("mysql://"):
+if DATABASE_URL.startswith("mysql://"):
     DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
 
-engine = create_engine(
-    DATABASE_URL,
-    echo=True,
-    pool_pre_ping=True
-)
-
-SessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=engine,
-)
-
+engine = create_engine(DATABASE_URL, echo=True, pool_pre_ping=True)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 def get_db():
@@ -34,3 +22,5 @@ def get_db():
         yield db
     finally:
         db.close()
+
+print("🔥 Connected DB:", DATABASE_URL)
