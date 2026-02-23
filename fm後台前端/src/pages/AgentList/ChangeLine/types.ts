@@ -3,7 +3,14 @@ export interface ProfitItem {
   detail: string
   val: string
 }
-
+export interface ProfitCycleItem {
+  title: string
+  detail: string
+}
+export interface ProfitSystemItem {
+  title: string
+  detail?: string
+}
 export interface ChangeLineDataType {
   key: React.Key
   sourceLevel: string
@@ -12,8 +19,19 @@ export interface ChangeLineDataType {
   sourceAgentRealName: string
   upperLevel: string
   upperAgentName: string
+
   profitSetting: ProfitItem[]
-  profitName: string
+
+  /** 分潤名稱（不要寫死） */
+  profitName: string /** 
+  ✅ 代理分潤制度（流程） */
+  profitSystems: ProfitSystemItem[]
+
+  /** ✅ 換線日期 */
+  changeDate: string
+  /** ✅ 代理分潤結算（顯示用，支援換行） */
+  profitCycles: ProfitCycleItem[]
+
   handler: string
 }
 

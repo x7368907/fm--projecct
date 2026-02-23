@@ -1,7 +1,9 @@
 import type { ColumnsType } from 'antd/es/table'
 import type { ChangeLineDataType } from './types'
 import ProfitSettingCell from './components/ProfitSettingCell'
+import ProfitCycleCell from './components/ProfitCycleCell'
 import ActionLogsButton from './components/ActionLogsButton'
+import ProfitSystemCell from './components/ProfitSystemCell'
 
 export const getColumns = ({
   onLogs,
@@ -9,7 +11,7 @@ export const getColumns = ({
   onLogs: (r: ChangeLineDataType) => void
 }): ColumnsType<ChangeLineDataType> => [
   {
-    title: '來源代理級別',
+    title: '原代理級別',
     dataIndex: 'sourceLevel',
     width: 120,
     render: (text) => <span>{text}</span>,
@@ -22,7 +24,8 @@ export const getColumns = ({
     render: (text) => <span>{text}</span>,
   },
   {
-    title: '來源代理名稱',
+    title: '原代理名稱',
+    align: 'center',
     render: (_, r) => (
       <div className="flex flex-col">
         <span className="font-bold">{r.sourceAgentName}</span>
@@ -31,28 +34,43 @@ export const getColumns = ({
     ),
   },
   {
-    title: '上級代理級別',
+    title: '新代理級別',
     dataIndex: 'upperLevel',
+    align: 'center',
     render: (t) => <span>{t} (2)</span>,
   },
   {
-    title: '上級代理名稱',
+    title: '新代理名稱',
     dataIndex: 'upperAgentName',
+    align: 'center',
     render: (t) => <div className="whitespace-pre-wrap">{t}</div>,
   },
   {
-    title: '代理分潤額度',
+    title: '分潤名稱',
     dataIndex: 'profitSetting',
     width: 320,
+    align: 'center',
     render: (items) => <ProfitSettingCell items={items} />,
   },
   {
-    title: '分潤名稱',
-    render: () => <span className="text-gray-600">抽水代理(無績效退水)</span>,
+    title: '代理分潤制度',
+    dataIndex: 'profitSystems',
+    align: 'center',
+    width: 160,
+    render: (items) => <ProfitSystemCell items={items} />,
   },
   {
-    title: '代理分潤週期',
-    dataIndex: 'profitName',
+    title: '代理分潤結算',
+    dataIndex: 'profitCycles',
+    align: 'center',
+    width: 160,
+    render: (items) => <ProfitCycleCell items={items} />,
+  },
+
+  {
+    title: '換線日期',
+    dataIndex: 'changeDate',
+    align: 'center',
     render: (t) => <div className="whitespace-pre-wrap text-center">{t}</div>,
   },
   {

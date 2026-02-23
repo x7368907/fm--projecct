@@ -17,20 +17,18 @@ export default function ChangeLine() {
   const [view, setView] = useState<'list' | 'create'>('list')
   const { logs, open, setOpen, fetchLogs } = useHandlerLogs()
 
-  // 2. 定義搜尋欄位 (依照原本的 span 比例配置)
-  // 原本總寬度 24 = 4 + 5 + 10 + 3 + (2 按鈕)
+  // 搜尋欄位
   const searchFields: SearchField[] = [
     {
-      label: '來源代理級別',
+      label: '原代理級別',
       name: 'sourceLevel',
-      // 原本 span={4}
       colProps: { xs: 24, sm: 12, md: 5 },
       render: () => (
         <Select
           placeholder="請選擇代理級別"
           allowClear
           options={[
-            { label: '全部', value: 'all' }, // 若是用於搜尋，建議加上此項
+            { label: '全部', value: 'all' },
             { label: '1級總代理', value: 'lvl1' },
             { label: '2級代理', value: 'lvl2' },
             { label: '3級代理', value: 'lvl3' },
@@ -43,7 +41,7 @@ export default function ChangeLine() {
       ),
     },
     {
-      label: '來源代理名稱',
+      label: '原代理名稱',
       name: 'sourceAgentName',
       colProps: { xs: 24, sm: 12, md: 5 },
       render: () => <Input placeholder="請輸入" />,
