@@ -93,8 +93,7 @@ export default function PointsDetail() {
     <ConfigProvider theme={theme}>
       <div className="min-h-screen bg-gray-50 p-4">
         <Breadcrumb separator=">" className="mb-4">
-          <Breadcrumb.Item>營運商管理</Breadcrumb.Item>
-          {/* 加入 onClick 讓使用者可以點擊回到列表 */}
+          <Breadcrumb.Item>代理管理</Breadcrumb.Item>
           <Breadcrumb.Item
             className={
               view !== 'list'
@@ -121,7 +120,6 @@ export default function PointsDetail() {
           />
         ) : (
           <>
-            {/* 3. 使用共用 SearchPanel */}
             <SearchPanel
               fields={searchFields}
               onCreate={() => setView('create')}

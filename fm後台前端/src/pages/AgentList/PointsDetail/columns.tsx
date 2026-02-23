@@ -2,7 +2,25 @@ import type { ColumnsType } from 'antd/es/table'
 import EditableNoteCell from './components/EditableNoteCell'
 import ActionLogsButton from './components/ActionLogsButton'
 import type { PointsRecord } from './types'
+const renderAgentName = (value?: string) => {
+  if (!value) return null
 
+  // 解析：FMCA (金哥/成數代理-主站)
+  const match = value.match(/^(.+?)\s*\((.+)\)$/)
+
+  if (!match) {
+    return <div>{value}</div>
+  }
+
+  const [, mainName, subName] = match
+
+  return (
+    <div className="text-sm leading-snug">
+      <div className="font-medium">{mainName}</div>
+      <div className="text-gray-500">({subName})</div>
+    </div>
+  )
+}
 export const getColumns = ({
   onUpdateNote,
   onLogs,
@@ -18,7 +36,7 @@ export const getColumns = ({
     title: '發放代理名稱',
     dataIndex: 'issuingAgentName',
     width: 180,
-    render: (t) => <div className="whitespace-pre-wrap">{t}</div>,
+    render: renderAgentName,
   },
 
   { title: '發放代理', dataIndex: 'issuingAgent', width: 100 },
@@ -44,7 +62,7 @@ export const getColumns = ({
     title: '接收代理名稱',
     dataIndex: 'receivingAgentName',
     width: 180,
-    render: (t) => <div className="whitespace-pre-wrap">{t}</div>,
+    render: renderAgentName,
   },
 
   { title: '接收會員', dataIndex: 'receivingMember', width: 100 },
