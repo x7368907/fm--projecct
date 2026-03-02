@@ -23,4 +23,4 @@ def get_db():
     finally:
         db.close()
 
-print("🔥 Connected DB:", DATABASE_URL)
+
