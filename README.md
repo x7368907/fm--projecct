@@ -1,93 +1,228 @@
-# fm-project
+FM Admin System
 
+Full-Stack 後台管理系統，支援代理層級管理、分潤制度設定與會員統計，並已完成 Production 部署。
 
+🚀 Project Overview
 
-## Getting started
+本專案為一套全端後台管理系統，主要功能包含：
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+多層級代理管理（Parent / Child 結構）
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+分潤制度（佔成制 / 返水制）
 
-## Add your files
+代理下線數量統計
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+會員數量統計
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/x7368907/fm-project.git
-git branch -M main
-git push -uf origin main
-```
+JWT 登入驗證
 
-## Integrate with your tools
+前後端完整部署（Vercel + Railway）
 
-* [Set up project integrations](https://gitlab.com/x7368907/fm-project/-/settings/integrations)
+此專案涵蓋從資料庫設計 → API 開發 → 前端整合 → 部署上線的完整流程。
 
-## Collaborate with your team
+🧱 Tech Stack
+Frontend
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+React + TypeScript
 
-## Test and Deploy
+Ant Design
 
-Use the built-in continuous integration in GitLab.
+Axios
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Vite
 
-***
+Backend
 
-# Editing this README
+FastAPI
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+SQLAlchemy ORM
 
-## Suggestions for a good README
+Pydantic
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+Uvicorn
 
-## Name
-Choose a self-explaining name for your project.
+Database
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+MySQL
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Foreign Key 關聯設計
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+JOIN / GROUP BY / Subquery
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Deployment
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+Frontend: Vercel
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Backend: Railway
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Database: Railway MySQL
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+🏗 System Architecture
+React (Frontend)
+↓ Axios
+FastAPI (Backend)
+↓ SQLAlchemy ORM
+MySQL Database
+🗄 Database Design
+Main Tables
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+agents
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+users
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+commission_plan
 
-## License
-For open source projects, say how it is licensed.
+commission_plan_log
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Key Relationships
+
+agents.parent_id → 代理層級結構
+
+users.agent_id → 會員歸屬代理
+
+agents.commission_plan_id → 分潤制度關聯
+
+Aggregation Logic
+
+系統使用 JOIN + Subquery 計算：
+
+child_count（代理下線數量）
+
+member_count（代理會員數量）
+
+🔐 Authentication
+
+JWT Token 驗證機制
+
+登入成功後返回 access_token
+
+前端透過 Authorization Header 呼叫 API
+
+📡 Example API
+GET /agents?level=1
+
+回傳資料包含：
+
+代理基本資訊
+
+代理層級
+
+下線數量
+
+會員數量
+
+分潤制度與比例
+
+⚙️ Local Development
+1️⃣ Clone Repository
+git clone <your-repo-url>
+cd fm-admin-system
+2️⃣ Backend Setup
+cd backend
+python -m venv venv
+source venv/bin/activate # Mac/Linux
+pip install -r requirements.txt
+
+建立 .env：
+
+DATABASE_URL=mysql+pymysql://root:password@localhost:3307/fm_project
+
+啟動後端：
+source venv/bin/activate
+uvicorn app.main:app --reload
+
+API 文件：
+
+http://localhost:8000/docs
+3️⃣ Frontend Setup
+cd frontend
+npm install
+
+建立 .env：
+
+VITE_API_BASE_URL=http://localhost:8000
+
+啟動前端：
+
+npm run dev
+🌍 Production Deployment
+Frontend
+
+Deploy 至 Vercel
+
+設定環境變數：
+
+VITE_API_BASE_URL
+
+Backend
+
+Deploy 至 Railway
+
+設定：
+
+DATABASE_URL
+
+🐛 Challenges & Solutions
+1️⃣ ORM Model 與 DB Schema 不同步
+
+問題：
+
+Production 環境出現 500 Error
+
+Unknown column 錯誤
+
+解法：
+
+比對 SQLAlchemy Model 與 MySQL Schema
+
+使用 ALTER TABLE 補齊缺失欄位
+
+確保 Migration 與資料表一致
+
+2️⃣ CORS 跨網域問題
+
+問題：
+
+前端部署後無法呼叫 API
+
+解法：
+
+在 FastAPI 設定 CORSMiddleware
+
+允許指定前端網址
+
+3️⃣ Railway MySQL 連線格式錯誤
+
+問題：
+
+mysql:// 連線格式不被 SQLAlchemy 支援
+
+解法：
+
+轉換為 mysql+pymysql://
+
+📈 Key Learning Outcomes
+
+熟悉 Full-Stack 開發流程
+
+實際處理 Production 環境錯誤
+
+能獨立完成資料建模與 API 設計
+
+具備前後端整合與部署經驗
+
+📌 Future Improvements
+
+加入 Role-based Permission
+
+分頁與效能優化
+
+使用 Docker 容器化部署
+
+加入 CI/CD Pipeline
+
+👨‍💻 Author
+
+Full-Stack Developer
+React + FastAPI + MySQL
+Deployed on Vercel & Railway
