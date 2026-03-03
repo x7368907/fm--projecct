@@ -59,7 +59,7 @@ Database: MySQL (Docker for local development)
 
 Demo
 
-(Deploy link here)
+(https://fm-project.vercel.app/)
 
 FM Admin System
 
