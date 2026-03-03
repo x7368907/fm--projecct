@@ -1,3 +1,66 @@
+Commission & Agent Management System
+Overview
+
+A fullstack admin system built with React (Frontend) and FastAPI (Backend), designed to manage agent hierarchies and commission structures.
+
+Tech Stack
+
+React + TypeScript
+
+FastAPI
+
+MySQL
+
+SQLAlchemy
+
+Tailwind CSS
+
+Ant Design
+
+JWT Authentication
+
+Architecture
+
+Frontend:
+
+Domain-based state management
+
+Reusable UI component system
+
+Data table abstraction layer
+
+Backend:
+
+Layered architecture (Router / Service / Model / Schema)
+
+RESTful API design
+
+Role-based access control
+
+Features
+
+JWT login authentication
+
+Role-based permission control
+
+Dynamic table filtering & pagination
+
+Commission rule management
+
+Agent hierarchy management
+
+Deployment
+
+Frontend: Vercel
+
+Backend: Railway
+
+Database: MySQL (Docker for local development)
+
+Demo
+
+(Deploy link here)
+
 FM Admin System
 
 Full-Stack 後台管理系統，支援代理層級管理、分潤制度設定與會員統計，並已完成 Production 部署。
